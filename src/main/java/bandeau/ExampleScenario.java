@@ -34,7 +34,7 @@ public class ExampleScenario {
         s.addEffect(new Rotate("2 tours à droite", 180, 4000, true), 2);
         s.addEffect(new Rotate("2 tours à gauche", 180, 4000, false), 2);
         // On cree le bandeau
-        Bandeau b = new Bandeau();
+        SharedBaudeau b = new SharedBaudeau();
         b.setMessage(message);
         b.sleep(2000);
         // On joue le scenario sur le bandeau
