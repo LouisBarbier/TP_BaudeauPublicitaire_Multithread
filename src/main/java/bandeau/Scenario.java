@@ -24,11 +24,6 @@ class ScenarioElement {
  */
 public class Scenario {
 
-    private final Lock verrou = new ReentrantLock();
-    private boolean beingPlayed = false;
-    private final Condition played = verrou.newCondition();
-    private boolean beingChanged = false;
-    private final Condition changed = verrou.newCondition();
     private final List<ScenarioElement> myElements = new LinkedList<>();
 
     /**
@@ -37,25 +32,8 @@ public class Scenario {
      * @param e l'effet à ajouter
      * @param repeats le nombre de répétitions pour cet effet
      */
-    public boolean addEffect(Effect e, int repeats){
-        verrou.lock();
-        try {
-            while (beingPlayed) {
-                played.await();
-            }
-            if (beingPlayed) {
-                return false;
-            }
-            beingChanged=true;
-            myElements.add(new ScenarioElement(e, repeats));
-            beingChanged=false;
-            changed.signalAll();
-            return true;
-        } catch (InterruptedException ex) {
-            return false;
-        } finally {
-            verrou.unlock();
-        }
+    public void addEffect(Effect e, int repeats){
+        myElements.add(new ScenarioElement(e, repeats));
     }
 
     /**
